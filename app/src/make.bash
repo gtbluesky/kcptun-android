@@ -3,8 +3,8 @@
 function try () {
 "$@" || exit -1
 }
-
-[ -z "$ANDROID_NDK_HOME" ] && ANDROID_NDK_HOME=$ANDROID_HOME/ndk-bundle
+ANDROID_NDK_HOME=/Users/gantao/Library/Android/sdk/ndk/22.1.7171670
+#[ -z "$ANDROID_NDK_HOME" ] && ANDROID_NDK_HOME=$ANDROID_HOME/ndk-bundle
 TOOLCHAIN=$(find $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/* -maxdepth 1 -type d -print -quit)/bin
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -16,6 +16,9 @@ try mkdir -p $TARGET/armeabi-v7a $TARGET/x86 $TARGET/arm64-v8a $TARGET/x86_64
 export GOPATH=$DIR
 
 pushd $DIR/kcptun/client
+
+go mod init com.example/client
+go mod tidy
 
 if [ ! -f "$TARGET/armeabi-v7a/libkcptun.so" ] || [ ! -f "$TARGET/arm64-v8a/libkcptun.so" ] ||
    [ ! -f "$TARGET/x86/libkcptun.so" ] || [ ! -f "$TARGET/x86_64/libkcptun.so" ]; then
